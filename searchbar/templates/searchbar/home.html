@@ -1,0 +1,25 @@
+{% extends 'main.html' %}
+
+{% block content %}
+
+{% for Restaurant in Restaurants %}
+    <span>{{ Restaurant.name }}</span> <span style="margin-left: 15px;">{{ Restaurant.full_details.user_rating.aggregate_rating }}</span> <span>({{ Restaurant.full_details.user_rating.votes }})</span>
+    
+    {% if q|lower in and Restaurant.items.all|lower %}
+    {% for item in Restaurant.items.all|dictsort:"name" %}
+        {% if item.name|lower == q|lower %}
+            <p style="margin-left: 15px;"><strong>{{ item.name }}</strong><span style="margin-left: 15px;">{{ item.price }}</span></p>
+        {% endif %}
+    {% endfor %}
+    {% for item in Restaurant.items.all|slice:":5" %}
+        {% if item.name|lower != q|lower %}
+            <p style="margin-left: 15px;">{{ item.name }}<span style="margin-left: 15px;">{{ item.price }}</span></p>
+        {% endif %}    {% endfor %}
+	{% endif %}
+
+    
+
+    <br>
+{% endfor %}
+
+{%endblock%}
